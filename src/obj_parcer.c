@@ -1,9 +1,11 @@
 #include "obj_parcer.h"
 
-int main() {
+// проверка работы парсера
+/*int main() {
     obj_data data = obj_parcer("obj_files/cube.obj");
     obj_print(data);
-}
+    free_obj_data(&data);
+}*/
 
 /*функция, которая считает количество вершин и полигонов
 и вызывает главный парсер результат работы которого возвращает в типе данных obj_data*/
