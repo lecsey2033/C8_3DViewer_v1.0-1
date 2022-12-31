@@ -26,9 +26,11 @@ typedef struct Data {
 
 obj_data obj_parcer(char *name_obj_file);
 void amount_of_vertexes_and_facets(char *name_obj_file, obj_data *data);
-void memories_for_coordinates(obj_data *data);
+void memories_for_coordinates_and_polygons (obj_data *data);
 void obj_parcing(char *name_obj_file, obj_data *data);
-void matrix_of_polygons(polygon_t* polygons, obj_data *data);
+void parcig_of_coordinates(int *num_of_row_coordinates, char *str, obj_data *data);
+void parcig_of_polygons(int *num_of_row_polygons, char *str, obj_data *data);
+void free_obj_data(obj_data *data);
 
 // вспомогательная функция для распечатки данных obj файла
 void obj_print(obj_data data);
