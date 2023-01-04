@@ -93,13 +93,15 @@ void memories_for_coordinates_and_polygons(obj_data *data) {
 void parcig_of_coordinates(int *num_of_row_coordinates, char *str, obj_data *data) {
     char number[20];
     int num_of_column = 0;
+    int check = 0;
 
     (*num_of_row_coordinates)++; 
-    for (int i = 2, j = 0; str[i] != '\n'; i++) {
+    for (int i = 2, j = 0; check == 0; i++) {
         if ((str[i] >= '0' && str[i] <= '9') || str[i] == '.' || str[i] == '-') {
             number[j] = str[i];
             j++;
         } else {
+            if (str[i] == '\0') {check = 1;}
             number[j] = '\0';
             data->matrix_3d.matrix[*num_of_row_coordinates][num_of_column] = atof(number);
             j = 0;
@@ -112,6 +114,8 @@ void parcig_of_coordinates(int *num_of_row_coordinates, char *str, obj_data *dat
 void parcig_of_polygons(int *num_of_row_polygons, char *str, obj_data *data) {
     char number[20];
     int num_of_column = 0;
+    int check = 0;
+
     (*num_of_row_polygons)++;
     data->polygons[*num_of_row_polygons].numbers_of_vertexes_in_facets = 0;
 
@@ -121,7 +125,7 @@ void parcig_of_polygons(int *num_of_row_polygons, char *str, obj_data *data) {
         }
     }
     data->polygons[*num_of_row_polygons].vertexes = (int*)calloc(data->polygons[*num_of_row_polygons].numbers_of_vertexes_in_facets, sizeof(int));
-    for (int i = 2, j = 0; str[i] != '\n'; i++) {
+    for (int i = 2, j = 0; check == 0; i++) {
         if (str[i] == '-') {
             i++;
         }
@@ -133,6 +137,7 @@ void parcig_of_polygons(int *num_of_row_polygons, char *str, obj_data *data) {
                 i++;
             }
         } else {
+            if (str[i] == '\0') {check = 1;}
             number[j] = '\0';
             data->polygons[*num_of_row_polygons].vertexes[num_of_column] = atoi(number);
             j = 0;
