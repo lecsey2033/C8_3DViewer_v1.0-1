@@ -24,8 +24,8 @@ START_TEST(test_amount_of_vertexes_and_facets) {
     obj_data objdata;
     int error = obj_parcer(filename, &objdata);
     ck_assert_int_eq(error, 0);
-    ck_assert_double_eq(objdata.amount_of_vertexes, 37662);
-    ck_assert_double_eq(objdata.amount_of_facets, 37441);
+    ck_assert_int_eq((int)objdata.amount_of_vertexes, 37662);
+    ck_assert_int_eq((int)objdata.amount_of_facets, 37441);
     free_obj(&objdata);
 }
 END_TEST
