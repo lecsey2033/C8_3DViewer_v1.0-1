@@ -1,16 +1,21 @@
 #include "obj_parcer.h"
 
 // Функция, которая вызывает ключевые функции записывающие структуру obj_data
-void obj_parcer(char *name_obj_file, obj_data *data) {
-    amount_of_vertexes_and_facets(name_obj_file, data);
-    data->vertexes_array = (double*)calloc(3 * data->amount_of_vertexes, sizeof(double));
-    data->polygons = (polygon_t*)calloc(data->amount_of_facets, sizeof(polygon_t));
-    obj_parcing(name_obj_file, data);
-    correct_vertexes_array(data);
+int obj_parcer(char *name_obj_file, obj_data *data) {
+    int error = 0;
+    error = amount_of_vertexes_and_facets(name_obj_file, data);
+    if (error == 0) {
+        data->vertexes_array = (double*)calloc(3 * data->amount_of_vertexes, sizeof(double));
+        data->polygons = (polygon_t*)calloc(data->amount_of_facets, sizeof(polygon_t));
+        obj_parcing(name_obj_file, data);
+        correct_vertexes_array(data);
+    }
+    return error;
 }
 
 // инициализацие некоторых переменных и подсчет количества врешин и полигонов, и запись этих данных в структуру obj_data
-void amount_of_vertexes_and_facets(char *name_obj_file, obj_data *data) {
+int amount_of_vertexes_and_facets(char *name_obj_file, obj_data *data) {
+    int error = 0;
     FILE *obj_file;
     char str[LENSTR];
 
@@ -25,7 +30,7 @@ void amount_of_vertexes_and_facets(char *name_obj_file, obj_data *data) {
     data->count_of_vertexes_in_facets = 0;
 
     if ((obj_file = fopen(name_obj_file, "r")) == NULL) {
-       printf("file is not found\n");
+       error = 1;
     } else {
         while (!feof(obj_file)) {
             fgets(str, LENSTR, obj_file);
@@ -37,6 +42,7 @@ void amount_of_vertexes_and_facets(char *name_obj_file, obj_data *data) {
         }
     }
     fclose(obj_file);
+    return error;
 }
 
 /*главный парсер, который анализирует данные из obj файла и записывает
@@ -44,26 +50,23 @@ void amount_of_vertexes_and_facets(char *name_obj_file, obj_data *data) {
 void obj_parcing(char *name_obj_file, obj_data *data) {
     FILE *obj_file;
 
-    if ((obj_file = fopen(name_obj_file, "r")) == NULL) {
-       printf("file is not found\n");
-    } else {
-        char str[LENSTR];
-        int n = 0;
-        int m = 0;
+    obj_file = fopen(name_obj_file, "r");
+    char str[LENSTR];
+    int n = 0;
+    int m = 0;
 
-        while (!feof(obj_file)) {
-            fgets(str, LENSTR, obj_file);
-            if (str[0] == 'v' && str[1] == ' ') {
-                parcig_of_coordinates(str, data, n);
-                n += 3;
-            }
-            if (str[0] == 'f' && str[1] == ' ') {
-                parcig_of_facets(str, data, m);
-                m++;
-            }
+    while (!feof(obj_file)) {
+        fgets(str, LENSTR, obj_file);
+        if (str[0] == 'v' && str[1] == ' ') {
+            parcig_of_coordinates(str, data, n);
+            n += 3;
         }
-        writing_indexes_array(data);
+        if (str[0] == 'f' && str[1] == ' ') {
+            parcig_of_facets(str, data, m);
+            m++;
+        }
     }
+    writing_indexes_array(data);
     fclose(obj_file);
 }
 
@@ -72,7 +75,7 @@ void obj_parcing(char *name_obj_file, obj_data *data) {
 void parcig_of_coordinates(char *str, obj_data *data, int n) {
     char number[20];
     int check = 0;
-    int count = 1;
+    int xyz = 1;
 
     for (int i = 2, j = 0; check == 0; i++) {
         if ((str[i] >= '0' && str[i] <= '9') || str[i] == '.' || str[i] == '-') {
@@ -82,13 +85,13 @@ void parcig_of_coordinates(char *str, obj_data *data, int n) {
             if (str[i] == '\0' || str[i] == '\n') {check = 1;}
             number[j] = '\0';
             data->vertexes_array[n] = atof(number);
-            if (count == 1) {
+            if (xyz == 1) {
                 if (data->vertexes_array[n] > data->maxwidth) {
                     data->maxwidth = data->vertexes_array[n];
                 } else if (data->vertexes_array[n] < data->minwidth) {
                     data->minwidth = data->vertexes_array[n];
                 }
-            } else if (count == 2) {
+            } else if (xyz == 2) {
                 if (data->vertexes_array[n] > data->maxheight) {
                     data->maxheight = data->vertexes_array[n];
                 } else if (data->vertexes_array[n] < data->minheight) {
@@ -101,7 +104,7 @@ void parcig_of_coordinates(char *str, obj_data *data, int n) {
                     data->mindepth = data->vertexes_array[n];
                 }
             }
-            count++;
+            xyz++;
             n++;
             j = 0;
         }
@@ -192,4 +195,13 @@ void correct_vertexes_array(obj_data *data) {
             count = 1;
         }
     }
+}
+
+// отчистка структуры obj_data
+void free_obj(obj_data *data) {
+    free(data->vertexes_array);
+    for (unsigned int i = 0; i < data->amount_of_facets; i++) {
+        free(data->polygons[i].polygon_i);
+    }
+    free(data->polygons);
 }

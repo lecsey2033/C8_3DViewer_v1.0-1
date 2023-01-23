@@ -28,12 +28,13 @@ typedef struct data {
     unsigned int* indexes_array;
 } obj_data;
 
-void obj_parcer(char *name_obj_file, obj_data *data);
-void amount_of_vertexes_and_facets(char *name_obj_file, obj_data *data);
+int obj_parcer(char *name_obj_file, obj_data *data);
+int amount_of_vertexes_and_facets(char *name_obj_file, obj_data *data);
 void obj_parcing(char *name_obj_file, obj_data *data);
 void parcig_of_coordinates(char *str, obj_data *data, int n);
 void parcig_of_facets(char *str, obj_data *data, int m);
 void writing_indexes_array(obj_data *data);
 void correct_vertexes_array(obj_data *data);
+void free_obj(obj_data *data);
 
 #endif  // SRC_OBJ_PARCER_H_
