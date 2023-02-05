@@ -3,7 +3,6 @@ QT       += core gui openglwidgets
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
-LIBS += -lopengl32
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
@@ -22,11 +21,6 @@ HEADERS += \
 
 FORMS += \
     mainwindow.ui
-
-DISTFILES += \
-    ../obj_files/castle.obj \
-    ../obj_files/cube.obj \
-    ../obj_files/guitar.obj
 
 include(3rdparty/src/gifimage/qtgifimage.pri)
 
