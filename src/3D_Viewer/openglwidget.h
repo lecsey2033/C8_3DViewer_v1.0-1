@@ -18,8 +18,8 @@ public:
   void paintGL() override;
   void resizeGL(int w, int h) override;
   void drawCube();
-  void mousePressEvent(QMouseEvent *) override;
-  void mouseMoveEvent(QMouseEvent *) override;
+  void mousePressEvent(QMouseEvent *mo) override;
+  void mouseMoveEvent(QMouseEvent *mo) override;
 
   float xRot, yRot, zRot;
   double ScaleX, ScaleY, ScaleZ;

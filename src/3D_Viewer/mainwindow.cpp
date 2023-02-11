@@ -6,6 +6,11 @@ MainWindow::MainWindow(QWidget *parent)
   ui->setupUi(this);
   ui->radioButton_2->setChecked(true);
 
+  std::string filename;
+  filename = "obj_files/cube.obj";
+  char *c = const_cast<char *>(filename.c_str());
+  obj_parcer(c, &this->ui->widget->objdata);
+
   screencast = new QTimer(this);
   screencast->setInterval(100);
   connect(screencast, SIGNAL(timeout()), this, SLOT(creategif()));
@@ -16,11 +21,15 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow() {
   saveSettings();
+  free_obj(&this->ui->widget->objdata);
+  delete screencast;
+  delete settings;
   delete ui;
 }
 
 void MainWindow::on_object_activated(int index) {
   initializeWidget();
+  free_obj(&this->ui->widget->objdata);
   this->ui->lineEdit->setText("");
 
   std::string filename;
@@ -47,7 +56,7 @@ void MainWindow::on_object_activated(int index) {
 
 void MainWindow::on_color_clicked() {
   initializeWidget();
-
+  free_obj(&this->ui->widget->objdata);
   strdata = this->ui->lineEdit->text();
   QString filename = "obj_files/" + strdata;
   QByteArray tmp = filename.toLocal8Bit();
