@@ -25,15 +25,15 @@ void MainWindow::on_object_activated(int index) {
 
   std::string filename;
   if (index == 0) {
-    filename = "../../../../obj_files/cube.obj";
+    filename = "obj_files/cube.obj";
   } else if (index == 1) {
-    filename = "../../../../obj_files/guitar.obj";
+    filename = "obj_files/guitar.obj";
   } else if (index == 2) {
-    filename = "../../../../obj_files/deer.obj";
+    filename = "obj_files/deer.obj";
   } else if (index == 3) {
-    filename = "../../../../obj_files/piranha.obj";
+    filename = "obj_files/piranha.obj";
   } else if (index == 4) {
-    filename = "../../../../obj_files/plane.obj";
+    filename = "obj_files/plane.obj";
   }
   char *c = const_cast<char *>(filename.c_str());
   obj_parcer(c, &this->ui->widget->objdata);
@@ -49,7 +49,7 @@ void MainWindow::on_color_clicked() {
   initializeWidget();
 
   strdata = this->ui->lineEdit->text();
-  QString filename = "../../../../obj_files/" + strdata;
+  QString filename = "obj_files/" + strdata;
   QByteArray tmp = filename.toLocal8Bit();
   const char *str = tmp.data();
   char *c = const_cast<char *>(str);
