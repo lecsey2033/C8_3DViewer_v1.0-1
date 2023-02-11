@@ -59,22 +59,23 @@ install:
 uninstall:
 	rm -rf build* /Users/$(USER)/obj_files
 
-open:
+open_app:
 	open build/3D_Viewer.app/Contents/MacOS/3D_Viewer
 
-clean:
-	rm -rf *.gc* *.o *.a *.out *.info *.dSYM build* /Users/$(USER)/obj_files
-	rm -rf report
-
 dvi:
-	open ../readme.html
+	open readme.html
 
- dist:
-	rm -rf dists21_3dviewer.0/
-	rm -rf dists21_3dviewer.0
-	mkdir dists21_3dviewer.0/
-	mkdir dists21_3dviewer.0/src
+dist:
+	rm -rf dist3D_Viewer.0/
+	rm -rf dist3D_Viewer.0
+	mkdir dist3D_Viewer.0/
+	mkdir dist3D_Viewer.0/src
+	cp -r obj_files dist3D_Viewer.0/src/
+	cp Makefile obj_parcer* s21* dist3D_Viewer.0/src/
 	cp build/3D_Viewer.app/Contents/MacOS/3D_Viewer dist3D_Viewer.0/src/
-	mv dist3D_Viewer.0/ .
 	tar cvzf dist3D_Viewer.0.tgz dist3D_Viewer.0
-	open .
+
+clean:
+	rm -rf *.gc* *.o *.a *.out *.info *.dSYM *.tgz dist*
+	rm -rf report
+	rm -rf build* /Users/$(USER)/obj_files

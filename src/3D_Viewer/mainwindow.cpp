@@ -39,7 +39,7 @@ void MainWindow::on_object_activated(int index) {
   obj_parcer(c, &this->ui->widget->objdata);
   this->ui->widget->Z = (-2.8) * this->ui->widget->objdata.max;
 
-  filename.erase(0, 13);
+  filename.erase(0, 10);
   strdata = QString::fromStdString(filename);
   dataTextEdit(strdata, this->ui->widget->objdata.amount_of_vertexes,
                this->ui->widget->objdata.amount_of_facets);
@@ -192,7 +192,7 @@ void MainWindow::done() {
   QString fileName = QFileDialog::getSaveFileName(
       this, tr("Save screenshot"), "",
       tr("GIF screenshot (*.gif);;GIF screenshot (*.gif)"));
-  QGifImage gif(QSize(640, 640));
+  QGifImage gif(QSize(640, 480));
   QVector<QRgb> ctable;
   ctable << qRgb((int)(this->ui->widget->Vred * 255),
                  (int)(this->ui->widget->Vgreen * 255),
